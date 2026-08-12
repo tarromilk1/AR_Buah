@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR BUAH — Belajar Buah Lewat Augmented Reality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6E0;
+    --leaf:#1F4B33;
+    --leaf-soft:#2E6B4A;
+    --papaya:#FF7A45;
+    --watermelon:#FF5C7A;
+    --lime:#B8E23A;
+    --card:#FFFFFF;
+    --ink:#20291F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--cream);
+    color: var(--ink);
+    font-family:'Nunito Sans', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{
+    font-family:'Baloo 2', sans-serif;
+    color: var(--leaf);
+  }
+
+  /* decorative fruit dots background */
+  .bg-dot{
+    position:absolute;
+    border-radius:50%;
+    opacity:.35;
+    filter: blur(1px);
+  }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 24px 8vw;
+    position:relative; z-index:2;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800; font-size:1.3rem;
+    color: var(--leaf);
+  }
+  .logo-mark{
+    width:38px; height:38px; border-radius:12px;
+    background: var(--leaf);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .hero{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items:center;
+    gap: 40px;
+    padding: 40px 8vw 80px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    display:inline-block;
+    background: var(--lime);
+    color: var(--leaf);
+    font-weight:800;
+    font-size:.78rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  h1.display{
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height:1.08;
+    font-weight:800;
+    margin-bottom:18px;
+  }
+  h1.display span{ color: var(--papaya); }
+  .hero p.lead{
+    font-size:1.08rem;
+    color:#3A4A3B;
+    max-width: 480px;
+    margin-bottom: 30px;
+  }
+
+  .dl-card{
+    background: var(--card);
+    border-radius: 24px;
+    padding: 22px 24px;
+    box-shadow: 0 18px 40px -18px rgba(31,75,51,.35);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    max-width: 460px;
+    border: 2px solid #EFE6C6;
+  }
+  .dl-icon{
+    width:52px; height:52px; flex:none;
+    border-radius:14px;
+    background: linear-gradient(155deg, var(--papaya), var(--watermelon));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .dl-info{ flex:1; min-width:0; }
+  .dl-info .name{ font-weight:800; color:var(--leaf); font-size:1rem; }
+  .dl-info .meta{ font-size:.82rem; color:#6b7568; }
+
+  .btn-download{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background: var(--leaf);
+    color: var(--cream);
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    padding: 16px 26px;
+    border-radius: 16px;
+    text-decoration:none;
+    box-shadow: 0 14px 28px -12px rgba(31,75,51,.55);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    margin-top:18px;
+  }
+  .btn-download:hover{
+    transform: translateY(-2px);
+    background: var(--leaf-soft);
+    box-shadow: 0 18px 34px -12px rgba(31,75,51,.6);
+  }
+  .btn-download:active{ transform: translateY(0); }
+  .btn-download svg{ width:20px; height:20px; }
+
+  .note{
+    margin-top:14px;
+    font-size:.85rem;
+    color:#6b7568;
+  }
+
+  /* AR viewfinder illustration */
+  .art-wrap{
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .frame{
+    position:relative;
+    width: min(320px, 80vw);
+    aspect-ratio: 3/4;
+    border-radius: 28px;
+    background: linear-gradient(160deg, #24422F, #1a3324);
+    box-shadow: 0 30px 60px -20px rgba(31,75,51,.5);
+    overflow:hidden;
+  }
+  .corner{
+    position:absolute; width:34px; height:34px;
+    border-color: var(--lime);
+    border-style:solid;
+    opacity:.9;
+  }
+  .corner.tl{ top:18px; left:18px; border-width:4px 0 0 4px; border-radius:8px 0 0 0;}
+  .corner.tr{ top:18px; right:18px; border-width:4px 4px 0 0; border-radius:0 8px 0 0;}
+  .corner.bl{ bottom:18px; left:18px; border-width:0 0 4px 4px; border-radius:0 0 0 8px;}
+  .corner.br{ bottom:18px; right:18px; border-width:0 4px 4px 0; border-radius:0 0 8px 0;}
+
+  .scan-line{
+    position:absolute; left:18px; right:18px; height:3px;
+    background: linear-gradient(90deg, transparent, var(--lime), transparent);
+    animation: scan 2.6s ease-in-out infinite;
+    border-radius:2px;
+  }
+  @keyframes scan{
+    0%,100%{ top:22%; opacity:.2;}
+    50%{ top:75%; opacity:1;}
+  }
+
+  .fruit-tag{
+    position:absolute;
+    background: rgba(184,226,58,.15);
+    border:1.5px solid var(--lime);
+    color:var(--lime);
+    font-size:.7rem;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:999px;
+    font-family:'Nunito Sans', sans-serif;
+  }
+
+  section.how{
+    background: var(--leaf);
+    padding: 70px 8vw;
+  }
+  section.how h2{ color:var(--cream); font-size: clamp(1.6rem,3vw,2.2rem); margin-bottom: 8px;}
+  section.how .sub{ color:#B9CFC0; margin-bottom:40px; max-width:520px;}
+
+  .steps{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .step{
+    background: rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:18px;
+    padding: 22px;
+  }
+  .step .num{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    color: var(--lime);
+    font-size:1.5rem;
+    margin-bottom:10px;
+  }
+  .step h3{ color: var(--cream); font-size:1rem; margin-bottom:6px;}
+  .step p{ color:#B9CFC0; font-size:.88rem;}
+
+  footer{
+    text-align:center;
+    padding: 32px 8vw 40px;
+    color:#7a8a7c;
+    font-size:.85rem;
+    background: var(--leaf);
+  }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns: 1fr; padding-top:10px;}
+    .art-wrap{ order:-1; margin-bottom:10px;}
+    .steps{ grid-template-columns: repeat(2,1fr);}
+  }
+  @media (max-width: 480px){
+    header{ padding:20px 6vw; }
+    .hero{ padding:20px 6vw 60px; }
+    .steps{ grid-template-columns: 1fr;}
+    section.how{ padding:50px 6vw;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .scan-line{ animation:none; top:45%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C9 6 8 8 8 11a4 4 0 0 0 8 0c0-3-1-5-4-9Z" fill="#FF7A45"/>
+        <path d="M12 2c1 1.5 1.6 2.6 2 3.6-1.2-.6-2.4-.6-4 0 .4-1 1-2.1 2-3.6Z" fill="#B8E23A"/>
+      </svg>
+    </div>
+    AR BUAH
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="eyebrow">Aplikasi Android · Augmented Reality</span>
+    <h1 class="display">Kenali buah lewat kamera, <span>secara AR</span>.</h1>
+    <p class="lead">
+      Arahkan kamera ke buah asli atau kartu buah, dan AR BUAH akan menampilkan
+      informasi, model 3D, dan fakta menarik langsung di layar. Cocok untuk belajar
+      di sekolah maupun di rumah.
+    </p>
+
+    <div class="dl-card">
+      <div class="dl-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="3" width="16" height="18" rx="3" fill="#fff" fill-opacity=".95"/>
+          <path d="M9 8h6M9 12h6M9 16h3" stroke="#1F4B33" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="dl-info">
+        <div class="name">AR_BUAH.apk</div>
+        <div class="meta">Android 8.0 ke atas &middot; File APK</div>
+      </div>
+    </div>
+
+    <a class="btn-download" id="downloadBtn"
+       href="https://drive.google.com/file/d/18Y2UYCVo7NrQlxxrYBgVZxnhAkpIFpGy/view?usp=drivesdk"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+      </svg>
+      Unduh AR_BUAH.apk
+    </a>
+    <div class="note">Link mengarah ke Google Drive. Jika muncul peringatan "tidak dapat memindai file", pilih <strong>Download anyway / Tetap unduh</strong>.</div>
+  </div>
+
+  <div class="art-wrap">
+    <div class="frame">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <div class="scan-line"></div>
+      <svg width="100%" height="100%" viewBox="0 0 320 420" style="position:absolute; inset:0;">
+        <ellipse cx="160" cy="230" rx="72" ry="80" fill="#FF7A45"/>
+        <path d="M160 150c8-16 22-24 36-22-4 14-16 24-30 26-2-1-4-2-6-4Z" fill="#B8E23A"/>
+        <rect x="152" y="130" width="8" height="26" rx="4" fill="#5C3A21"/>
+        <ellipse cx="140" cy="205" rx="16" ry="24" fill="#FFB088" fill-opacity=".55"/>
+      </svg>
+      <div class="fruit-tag" style="top:14%; left:12%;">Mangga</div>
+      <div class="fruit-tag" style="bottom:16%; right:12%;">92% cocok</div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <h2>Cara pasang di HP kamu</h2>
+  <p class="sub">APK diunduh dari luar Play Store, jadi Android akan meminta izin sekali sebelum instal.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num">01</div>
+      <h3>Unduh file APK</h3>
+      <p>Tekan tombol "Unduh AR_BUAH.apk" di atas, tunggu proses download selesai.</p>
+    </div>
+    <div class="step">
+      <div class="num">02</div>
+      <h3>Izinkan sumber tak dikenal</h3>
+      <p>Buka Pengaturan &rarr; Keamanan, aktifkan "Izinkan dari sumber ini" saat diminta.</p>
+    </div>
+    <div class="step">
+      <div class="num">03</div>
+      <h3>Buka file APK</h3>
+      <p>Cari file di folder Download, ketuk untuk mulai instalasi aplikasi.</p>
+    </div>
+    <div class="step">
+      <div class="num">04</div>
+      <h3>Buka AR BUAH</h3>
+      <p>Setelah terpasang, buka aplikasinya dan izinkan akses kamera untuk mulai.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  AR BUAH &middot; Dibuat untuk belajar mengenal buah dengan Augmented Reality
+</footer>
+
+</body>
+</html>
