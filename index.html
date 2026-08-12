@@ -49,12 +49,6 @@
     font-weight:800; font-size:1.3rem;
     color: var(--leaf);
   }
-  .logo-mark{
-    width:38px; height:38px; border-radius:12px;
-    background: var(--leaf);
-    display:flex; align-items:center; justify-content:center;
-  }
-
   .hero{
     position:relative;
     display:grid;
@@ -142,6 +136,29 @@
     color:#6b7568;
   }
 
+  .btn-marker{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background: transparent;
+    color: var(--leaf);
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:.98rem;
+    padding: 13px 24px;
+    border-radius: 16px;
+    text-decoration:none;
+    border: 2px solid var(--leaf);
+    transition: transform .15s ease, background .15s ease, color .15s ease;
+    margin-top:14px;
+  }
+  .btn-marker:hover{
+    background: var(--leaf);
+    color: var(--cream);
+    transform: translateY(-2px);
+  }
+  .btn-marker svg{ width:18px; height:18px; }
+
   /* AR viewfinder illustration */
   .art-wrap{
     position:relative;
@@ -199,10 +216,13 @@
 
   .steps{
     display:grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     max-width:1200px;
     margin:0 auto;
+  }
+  @media (max-width: 1080px){
+    .steps{ grid-template-columns: repeat(3, 1fr); }
   }
   .step{
     background: rgba(255,255,255,.06);
@@ -231,7 +251,7 @@
   @media (max-width: 860px){
     .hero{ grid-template-columns: 1fr; padding-top:10px;}
     .art-wrap{ order:-1; margin-bottom:10px;}
-    .steps{ grid-template-columns: repeat(2,1fr);}
+    .steps{ grid-template-columns: repeat(2, 1fr);}
   }
   @media (max-width: 480px){
     header{ padding:20px 6vw; }
@@ -248,9 +268,7 @@
 <body>
 
 <header>
-  <div class="logo">
-    AR BUAH
-  </div>
+  <div class="logo">AR BUAH</div>
 </header>
 
 <section class="hero">
@@ -285,37 +303,19 @@
       Unduh AR_BUAH.apk
     </a>
     <div class="note">Link mengarah ke Google Drive. Jika muncul peringatan "tidak dapat memindai file", pilih <strong>Download anyway / Tetap unduh</strong>.</div>
-  </div>
 
-
-
-
-  <div class="dl-card">
-      <div class="dl-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <rect x="4" y="3" width="16" height="18" rx="3" fill="#fff" fill-opacity=".95"/>
-          <path d="M9 8h6M9 12h6M9 16h3" stroke="#1F4B33" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="dl-info">
-        <div class="name">MARKER_BUAH</div>
-        <div class="meta">File Marker Buah</div>
-      </div>
-    </div>
-
-    <a class="btn-download" id="downloadBtn"
+    <a class="btn-marker" id="markerBtn"
        href="https://drive.google.com/folderview?id=19q8yHjgDZHlmCkcRkCcfRgKGNrD1wI_z"
        target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 17h7M17.5 14v7"/>
       </svg>
-      Unduh MARKER_BUAH
+      Unduh Marker Buah
     </a>
+    <div class="note">Marker dipakai supaya kamera bisa mengenali objek dan menampilkan AR-nya.</div>
   </div>
 
-
-
-  
   <div class="art-wrap">
     <div class="frame">
       <div class="corner tl"></div>
@@ -358,6 +358,11 @@
       <div class="num">04</div>
       <h3>Buka AR BUAH</h3>
       <p>Setelah terpasang, buka aplikasinya dan izinkan akses kamera untuk mulai.</p>
+    </div>
+    <div class="step">
+      <div class="num">05</div>
+      <h3>Arahkan ke marker buah</h3>
+      <p>Arahkan kamera pada marker buah, lalu klik untuk memunculkan tampilan AR-nya.</p>
     </div>
   </div>
 </section>
